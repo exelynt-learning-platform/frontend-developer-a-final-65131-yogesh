@@ -1,0 +1,112 @@
+<p-dialog
+  [header]="dialogTitle"
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '550px' }"
+  (onHide)="onHide()"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-grid">
+
+      <div class="form-field">
+        <label for="name">Name <span class="required">*</span></label>
+        <input
+          pInputText
+          id="name"
+          formControlName="name"
+          placeholder="Enter full name"
+          [class.ng-invalid]="isTouched('name') && form.get('name')?.invalid"
+        />
+        <small class="field-error" *ngIf="hasError('name', 'required')">Name is required.</small>
+        <small class="field-error" *ngIf="hasError('name', 'maxlength')">Name cannot exceed 100 characters.</small>
+      </div>
+
+      <div class="form-field">
+        <label for="emailId">Email <span class="required">*</span></label>
+        <input
+          pInputText
+          id="emailId"
+          formControlName="emailId"
+          placeholder="Enter email address"
+          [class.ng-invalid]="isTouched('emailId') && form.get('emailId')?.invalid"
+        />
+        <small class="field-error" *ngIf="hasError('emailId', 'required')">Email is required.</small>
+        <small class="field-error" *ngIf="hasError('emailId', 'email')">Please enter a valid email address.</small>
+        <small class="field-error" *ngIf="hasError('emailId', 'maxlength')">Email cannot exceed 150 characters.</small>
+      </div>
+
+      <div class="form-field">
+        <label for="mobile">Mobile <span class="required">*</span></label>
+        <input
+          pInputText
+          id="mobile"
+          formControlName="mobile"
+          placeholder="Enter mobile number"
+          [class.ng-invalid]="isTouched('mobile') && form.get('mobile')?.invalid"
+        />
+        <small class="field-error" *ngIf="hasError('mobile', 'required')">Mobile number is required.</small>
+        <small class="field-error" *ngIf="hasError('mobile', 'pattern')">Please enter a valid mobile number.</small>
+        <small class="field-error" *ngIf="hasError('mobile', 'maxlength')">Mobile cannot exceed 15 characters.</small>
+      </div>
+
+      <div class="form-field">
+        <label for="countryId">Country <span class="required">*</span></label>
+        <p-dropdown
+          inputId="countryId"
+          formControlName="countryId"
+          [options]="countryOptions"
+          placeholder="Select country"
+          [filter]="true"
+          filterPlaceholder="Search country"
+          [showClear]="true"
+          [class.ng-invalid]="isTouched('countryId') && form.get('countryId')?.invalid"
+        ></p-dropdown>
+        <small class="field-error" *ngIf="hasError('countryId', 'required')">Country is required.</small>
+      </div>
+
+      <div class="form-field">
+        <label for="state">State <span class="required">*</span></label>
+        <input
+          pInputText
+          id="state"
+          formControlName="state"
+          placeholder="Enter state"
+          [class.ng-invalid]="isTouched('state') && form.get('state')?.invalid"
+        />
+        <small class="field-error" *ngIf="hasError('state', 'required')">State is required.</small>
+        <small class="field-error" *ngIf="hasError('state', 'maxlength')">State cannot exceed 100 characters.</small>
+      </div>
+
+      <div class="form-field">
+        <label for="district">District <span class="required">*</span></label>
+        <input
+          pInputText
+          id="district"
+          formControlName="district"
+          placeholder="Enter district"
+          [class.ng-invalid]="isTouched('district') && form.get('district')?.invalid"
+        />
+        <small class="field-error" *ngIf="hasError('district', 'required')">District is required.</small>
+        <small class="field-error" *ngIf="hasError('district', 'maxlength')">District cannot exceed 100 characters.</small>
+      </div>
+
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancel"
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="onHide()"
+      [disabled]="loading"
+    ></p-button>
+    <p-button
+      [label]="submitLabel"
+      (onClick)="onSubmit()"
+      [loading]="loading"
+    ></p-button>
+  </ng-template>
+</p-dialog>

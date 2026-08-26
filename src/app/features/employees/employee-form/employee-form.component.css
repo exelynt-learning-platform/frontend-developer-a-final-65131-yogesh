@@ -1,0 +1,13 @@
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.required {
+  color: #e24c4c;
+}
+
+:host ::ng-deep .p-dropdown {
+  width: 100%;
+}
