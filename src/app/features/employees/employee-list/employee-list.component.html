@@ -1,0 +1,68 @@
+<p-table
+  [value]="employees"
+  [loading]="loading"
+  [paginator]="employees.length > 10"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} employees"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  responsiveLayout="scroll"
+  styleClass="p-datatable-sm p-datatable-striped"
+  aria-label="Employee table"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 80px">ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Mobile</th>
+      <th>Country</th>
+      <th style="width: 120px; text-align: center">Actions</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-employee>
+    <tr>
+      <td>{{ employee.id }}</td>
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.emailId }}</td>
+      <td>{{ employee.mobile }}</td>
+      <td>{{ getCountryName(employee) }}</td>
+      <td class="action-cell">
+        <p-button
+          icon="pi pi-pencil"
+          severity="info"
+          [text]="true"
+          [rounded]="true"
+          size="small"
+          (onClick)="edit.emit(employee)"
+          aria-label="Edit employee"
+          pTooltip="Edit"
+          tooltipPosition="top"
+        ></p-button>
+        <p-button
+          icon="pi pi-trash"
+          severity="danger"
+          [text]="true"
+          [rounded]="true"
+          size="small"
+          (onClick)="delete.emit(employee)"
+          aria-label="Delete employee"
+          pTooltip="Delete"
+          tooltipPosition="top"
+        ></p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6">
+        <div class="empty-state">
+          <i class="pi pi-users"></i>
+          <p>No employees found.</p>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

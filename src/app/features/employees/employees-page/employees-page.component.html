@@ -1,0 +1,114 @@
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="page-container">
+  <div class="page-header">
+    <h1>Employee Management</h1>
+    <p>Manage your organization's employee records</p>
+  </div>
+
+  <!-- Search Section -->
+  <p-card styleClass="search-card">
+    <div class="search-row">
+      <span class="search-label">Search Employee</span>
+      <div class="search-controls">
+        <input
+          pInputText
+          id="search-id"
+          [(ngModel)]="searchId"
+          placeholder="Enter Employee ID"
+          (keyup.enter)="onSearch()"
+          aria-label="Employee ID search input"
+          class="search-input"
+        />
+        <p-button
+          label="Search"
+          icon="pi pi-search"
+          (onClick)="onSearch()"
+          [disabled]="!searchId.trim()"
+          aria-label="Search employee"
+        ></p-button>
+        <p-button
+          label="Clear"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          (onClick)="onClearSearch()"
+          aria-label="Clear search"
+        ></p-button>
+      </div>
+    </div>
+
+    <!-- Search loading -->
+    <div class="loading-container" *ngIf="searchLoading$ | async">
+      <p-progressSpinner strokeWidth="4" [style]="{ width: '40px', height: '40px' }"></p-progressSpinner>
+      <span class="loading-text">Searching...</span>
+    </div>
+
+    <!-- Search error -->
+    <div class="mt-3" *ngIf="(searchError$ | async) as searchError">
+      <p-message severity="warn" [text]="searchError"></p-message>
+    </div>
+
+    <!-- Search result -->
+    <ng-container *ngIf="(searchResult$ | async) as found">
+      <ng-container *ngIf="(countries$ | async) as countries">
+        <div class="search-result">
+          <p-message severity="info" text="Employee found:"></p-message>
+          <app-employee-list
+            [employees]="[found]"
+            [countries]="countries"
+            (edit)="onEditEmployee($event)"
+            (delete)="onDeleteEmployee($event)"
+          ></app-employee-list>
+        </div>
+      </ng-container>
+    </ng-container>
+  </p-card>
+
+  <!-- Main Table -->
+  <p-card styleClass="table-card">
+    <div class="table-toolbar">
+      <p-button
+        label="Add Employee"
+        icon="pi pi-plus"
+        (onClick)="onAddEmployee()"
+        aria-label="Add new employee"
+      ></p-button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-container" *ngIf="loading$ | async">
+      <p-progressSpinner strokeWidth="4" [style]="{ width: '50px', height: '50px' }"></p-progressSpinner>
+    </div>
+
+    <!-- Error -->
+    <div class="mt-2 mb-3" *ngIf="(error$ | async) as loadError">
+      <p-message severity="error" [text]="loadError"></p-message>
+    </div>
+
+    <!-- Table -->
+    <ng-container *ngIf="!(loading$ | async)">
+      <ng-container *ngIf="(countries$ | async) as countries">
+        <app-employee-list
+          [employees]="(employees$ | async) || []"
+          [countries]="countries"
+          (edit)="onEditEmployee($event)"
+          (delete)="onDeleteEmployee($event)"
+        ></app-employee-list>
+      </ng-container>
+    </ng-container>
+  </p-card>
+</div>
+
+<!-- Add/Edit Form Dialog -->
+<ng-container *ngIf="(countries$ | async) as countries">
+  <app-employee-form
+    [(visible)]="formVisible"
+    [employee]="selectedEmployee"
+    [countries]="countries"
+    [loading]="formLoading"
+    (save)="onFormSave($event)"
+    (cancel)="onFormCancel()"
+  ></app-employee-form>
+</ng-container>

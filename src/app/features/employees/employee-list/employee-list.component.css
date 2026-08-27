@@ -1,0 +1,10 @@
+.action-cell {
+  text-align: center;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+}
